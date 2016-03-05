@@ -1,0 +1,17 @@
+WebRoot/WEB-INF/classes/*
+target/*
+*.class
+WebRoot/WEB-INF/classes/
+classes/
+.idea/
+*.iml
+.project
+.settings/
+.classpath
+.mymetadata
+.DS_Store
+.vagrant
+.ant-targets-build.xml
+/bin
+/build/
+*.pageflow
