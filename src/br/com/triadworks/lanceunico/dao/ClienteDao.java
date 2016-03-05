@@ -1,33 +1,44 @@
 package br.com.triadworks.lanceunico.dao;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
 
 public class ClienteDao {
+	
+	private final EntityManager entityManager;
+	
+	@Inject
+	public ClienteDao(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	public List<Cliente> lista() {
-		List<Cliente> clientes = new ArrayList<>();
-		clientes.add(new Cliente("Rafael", "rponte@gmail.com"));
-		clientes.add(new Cliente("Rommel", "rommel@gmail.com"));
-		clientes.add(new Cliente("Handerson", "handerson@gmail.com"));
+		List<Cliente> clientes = entityManager
+				.createQuery("select c from Cliente c", Cliente.class)
+				.getResultList();
+		
 		return clientes;
 	}
 
 	public void salva(Cliente cliente) {
-		
+		entityManager.persist(cliente);
 	}
 
 	public void remove(Cliente cliente) {
+		cliente = carrega(cliente.getId());
+		entityManager.remove(cliente);
 	}
 
 	public Cliente carrega(Integer id) {
-		return new Cliente("Rommel", "rommel@gmail.com"); 
+		return entityManager.find(Cliente.class, id); 
 	}
 
 	public void atualiza(Cliente cliente) {
-		
+		entityManager.merge(cliente);
 	}
 
 }

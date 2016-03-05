@@ -4,22 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import br.com.triadworks.lanceunico.controller.util.FacesUtils;
 import br.com.triadworks.lanceunico.dao.ClienteDao;
 import br.com.triadworks.lanceunico.modelo.Cliente;
+import br.com.triadworks.lanceunico.util.Transacional;
 
-@ManagedBean
+@Named
+@RequestScoped
 public class ClientesBean {
 
 	private Cliente cliente = new Cliente();
 	private List<Cliente> clientes = new ArrayList<>();
+	
+	@Inject
 	private ClienteDao dao;
+	@Inject
+	private FacesUtils facesUtils;
 	
 	@PostConstruct
 	public void init() {
-		this.dao = new ClienteDao();
 		this.clientes = this.dao.lista();
 	}
 	
@@ -33,18 +40,21 @@ public class ClientesBean {
 	/**
 	 * Grava novo cliente no banco
 	 */
+	@Transacional
 	public String salva() {
 		dao.salva(this.cliente);
-		new FacesUtils().info("Cliente adicionado com sucesso!");
-		return "lista";
+		facesUtils.info("Cliente adicionado com sucesso!");
+		return "lista?faces-redirect=true";
 	}
 	
 	/**
 	 * Remove cliente do banco
 	 */
-	public void remove(Cliente cliente) {
+	@Transacional
+	public String remove(Cliente cliente) {
 		dao.remove(cliente);
-		new FacesUtils().info("Cliente removido com sucesso!");
+		facesUtils.info("Cliente removido com sucesso!");
+		return "lista?faces-redirect=true"; 
 	}
 	
 	/**
@@ -58,10 +68,11 @@ public class ClientesBean {
 	/**
 	 * Atualiza dados do cliente no banco
 	 */
+	@Transacional
 	public String atualiza() {
 		dao.atualiza(this.cliente);
-		new FacesUtils().info("Cliente atualizado com sucesso!");
-		return "lista";
+		facesUtils.info("Cliente atualizado com sucesso!");
+		return "lista?faces-redirect=true";
 	}
 	
 	public Cliente getCliente() {
