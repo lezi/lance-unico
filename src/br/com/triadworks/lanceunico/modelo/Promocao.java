@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -21,8 +23,16 @@ public class Promocao implements Serializable {
 	private Integer id;
 	
 	private String nome;
-	private double valorMaximoPermitido;
+	private double valorMaximo;
 	private Date data;
+	
+	@Enumerated(EnumType.STRING)
+	private Local entrega;
+	
+	@Enumerated(EnumType.STRING)
+	private Status status = Status.ABERTA;
+	
+	private boolean receberEmDinheiro = false;
 	
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Lance> lances = new ArrayList<>();
@@ -45,11 +55,11 @@ public class Promocao implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public double getValorMaximoPermitido() {
-		return valorMaximoPermitido;
+	public double getValorMaximo() {
+		return valorMaximo;
 	}
-	public void setValorMaximoPermitido(double valorMaximoPermitido) {
-		this.valorMaximoPermitido = valorMaximoPermitido;
+	public void setValorMaximo(double valorMaximo) {
+		this.valorMaximo = valorMaximo;
 	}
 	public Date getData() {
 		return data;
@@ -63,7 +73,25 @@ public class Promocao implements Serializable {
 	public void setLances(List<Lance> lances) {
 		this.lances = lances;
 	}
-	
+	public Local getEntrega() {
+		return entrega;
+	}
+	public void setEntrega(Local entrega) {
+		this.entrega = entrega;
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	public boolean isReceberEmDinheiro() {
+		return receberEmDinheiro;
+	}
+	public void setReceberEmDinheiro(boolean receberEmDinheiro) {
+		this.receberEmDinheiro = receberEmDinheiro;
+	}
+
 	/**
 	 * Registra um novo lance
 	 */

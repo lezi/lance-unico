@@ -60,6 +60,12 @@ input[type="radio"] {
 	padding: 0;
 }
 
+input[type="checkbox"] {
+	width: auto;
+	display: inline;
+	padding-left: 0;
+}
+
 .resultado_busca a {
 	color: navy;
 }
