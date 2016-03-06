@@ -35,6 +35,25 @@ input.texto-longo {
 	width:600px;
 }
 
+.lances {
+	margin-top: 25px;
+	margin-bottom: 10px;
+	text-align: right; 
+}
+
+.lances input {
+	width: 100px;
+	display: inline;
+	margin-right: 10px;
+}
+
+.lances select {
+	width: 200px;
+	display: inline;
+	margin-right: 10px;
+}
+
+
 td label {
 	display: inline;
 }
@@ -52,6 +71,10 @@ input, select, textarea {
 
 input[disabled] {
 	background-color: #ddd;
+}
+
+input[readonly] {
+	background-color: #ccd;
 }
 
 input[type="radio"] {

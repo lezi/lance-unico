@@ -12,6 +12,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Promocao implements Serializable {
@@ -24,6 +26,8 @@ public class Promocao implements Serializable {
 	
 	private String nome;
 	private double valorMaximo;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date data;
 	
 	@Enumerated(EnumType.STRING)

@@ -7,37 +7,84 @@
 	template="/pages/templates/template_padrao.xhtml">
 	
 	<ui:define name="conteudo">
+	
+		<f:metadata>
+			<f:viewParam name="id" value="#{id}" required="true" />
+			<f:viewAction action="#{promocoesBean.gerenciar(id)}" />
+		</f:metadata>
+	
 		<div id="container" align="left">
-			<h1>Nova Promoção</h1>
+			<h1>Registrar lances dos clientes</h1>
 			
-			<h:form prependId="false">
-		        <h:outputLabel value="Nome" for="nome" />
-				<h:inputText id="nome" styleClass="texto-longo"
-					value="#{promocoesBean.promocao.nome}" pt:autofocus="autofocus"
-					label="Nome" required="true" />
+			<h:form id="form" prependId="false">
+			
+				<h:inputHidden id="id" value="#{promocoesBean.promocao.id}"/>
+				<div>
+			        <h:outputLabel value="Nome" for="nome" />
+			        #{promocoesBean.promocao.nome}
+						
+					<h:outputLabel value="Valor máximo do lance" for="valor" />
+					<h:outputText value="#{promocoesBean.promocao.valorMaximo}" styleClass="money">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" type="currency" />
+					</h:outputText>
 					
-				<h:outputLabel value="Valor máximo do lance" for="valor" />
-				<h:inputText id="valor"
-					value="#{promocoesBean.promocao.valorMaximo}" 
-					label="Valor máximo" required="true">
-					<f:convertNumber locale="pt_BR" maxFractionDigits="2" minFractionDigits="2" />
-				</h:inputText>
+					<h:outputLabel value="Receber em dinheiro?" for="dinheiro" />
+					#{promocoesBean.promocao.receberEmDinheiro ? 'Sim' : 'Não'}
+					
+					<h:outputLabel value="Local de entrega" for="entrega" />
+					#{promocoesBean.promocao.entrega}
+				</div>
 				
-				<h:outputLabel value="Receber em dinheiro?" for="dinheiro" />
-				<h:selectBooleanCheckbox label="Receber em dinheiro?" value="#{promocoesBean.promocao.receberEmDinheiro}" />
+				<h:panelGroup id="subform" styleClass="lances" layout="block">
+					<h:selectOneMenu id="cliente" value="#{promocoesBean.lance.cliente.id}"
+						pt:autofocus="autofocus" required="true" title="Cliente">
+						<f:selectItems value="#{promocoesBean.clientes}" var="c" 
+							itemLabel="#{c.nome}" itemValue="#{c.id}" />
+					</h:selectOneMenu>
+					<h:inputText id="valor" value="#{promocoesBean.lance.valor}" 
+						pt:placeholder="valor"  title="Valor do lance">
+						<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+					</h:inputText>
+					<h:inputText id="cupom" value="#{promocoesBean.lance.cupom}"
+						pt:placeholder="cupom" title="Cupom fiscal" 
+						required="true" maxlength="10">
+					</h:inputText>
+					<h:commandButton value="dar lance" action="#{promocoesBean.registra}">
+						<f:ajax execute="form" render="subform lances :mensagens" />
+					</h:commandButton>
+				</h:panelGroup>
 				
-				<h:outputLabel value="Local de entrega" for="entrega" />
-				<h:selectOneMenu id="entrega" value="#{promocoesBean.promocao.entrega}"
-					required="true" label="Local de entrega">
-					<f:selectItem itemLabel="Selecione um local de entrega" noSelectionOption="true" />
-					<f:selectItem itemLabel="Loja" itemValue="LOJA" />
-					<f:selectItem itemLabel="Residência do cliente" itemValue="RESIDENCIA" />
-				</h:selectOneMenu>
+				<h:dataTable
+					id="lances" 
+					value="#{promocoesBean.promocao.lances}"
+					var="lance" styleClass="dados"
+					rowClasses="odd, even">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Data" />
+						</f:facet>
+						<h:outputText value="#{lance.data}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Cliente</f:facet>
+						#{lance.cliente.nome}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Valor</f:facet>
+						<h:outputText value="#{lance.valor}" styleClass="money">
+							<f:convertNumber locale="pt_BR" minFractionDigits="2" type="currency" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">Cupom</f:facet>
+						#{lance.cupom.numero}
+					</h:column>
+				</h:dataTable>
 				
 				<div class="acoes-principais">
 					<h:link value="Voltar" outcome="lista"/>
-					&#160;
-					<h:commandButton value="Salvar" action="#{promocoesBean.salva}" />
 				</div>
 			</h:form>
 			
