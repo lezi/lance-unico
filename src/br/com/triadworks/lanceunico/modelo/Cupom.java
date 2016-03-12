@@ -7,7 +7,7 @@ public class Cupom {
 
 	private String numero;
 	
-	private Cupom(){}
+	protected Cupom(){}
 
 	public Cupom(String numero) {
 		this.numero = numero;
