@@ -7,14 +7,14 @@ import java.util.TreeSet;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 
-public class Avaliador {
+public class Sorteio {
 	
 	private double maiorDeTodos = Double.NEGATIVE_INFINITY;
 	private double menorDeTodos = Double.POSITIVE_INFINITY;
 	
 	private Lance menorLanceUnico = null;
 
-	public void avalia(Promocao promocao) {
+	public void sorteio(Promocao promocao) {
 		
 		if (promocao.getLances().isEmpty()) {
 			throw new RuntimeException("Promoção não possui lances");
