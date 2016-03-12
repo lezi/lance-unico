@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,33 +14,34 @@ import br.com.triadworks.lanceunico.controller.util.FacesUtils;
 import br.com.triadworks.lanceunico.dao.ClienteDao;
 import br.com.triadworks.lanceunico.dao.PromocaoDao;
 import br.com.triadworks.lanceunico.modelo.Cliente;
-import br.com.triadworks.lanceunico.modelo.Cupom;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.util.Transacional;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class PromocoesBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	private Promocao promocao = new Promocao();
 	private List<Promocao> promocoes = new ArrayList<>();
-	private Lance lance = new Lance();
+	
+	private Lance lance;
+	private List<Cliente> clientes;
 	
 	@Inject
-	private PromocaoDao dao;
+	private transient PromocaoDao dao;
 	@Inject
-	private FacesUtils facesUtils;
+	private transient FacesUtils facesUtils;
 	
 	@Inject
-	private ClienteDao clienteDao;
+	private transient ClienteDao clienteDao;
 	
 	@PostConstruct
 	public void init() {
 		this.promocoes = this.dao.lista();
-		this.lance.setCliente(new Cliente());
+		this.resetaLance();
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class PromocoesBean implements Serializable {
 	public String salva() {
 		this.promocao.setData(new Date());
 		dao.salva(this.promocao);
-		facesUtils.info("Promoção adicionada com sucesso!");
+		facesUtils.info("Promoção criada com sucesso!");
 		return "lista?faces-redirect=true";
 	}
 	
@@ -67,7 +67,7 @@ public class PromocoesBean implements Serializable {
 	 */
 	public String gerenciar(Integer id) {
 		this.promocao = dao.carrega(id);
-		return "lances";
+		return null;
 	}
 	
 	/**
@@ -80,13 +80,20 @@ public class PromocoesBean implements Serializable {
 			
 			Integer id = promocao.getId();
 			dao.registraLance(id, lance);
+			facesUtils.info("Lance registrado com sucesso!");
 			
-			this.lance = new Lance();
+			resetaLance();
 			this.promocao = dao.carrega(id);
 			
 		} catch (Exception e) {
 			facesUtils.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
+	}
+
+	private void resetaLance() {
+		this.lance = new Lance();
+		this.lance.setCliente(new Cliente());
 	}
 	
 	public Promocao getPromocao() {
@@ -98,9 +105,11 @@ public class PromocoesBean implements Serializable {
 	public Lance getLance() {
 		return lance;
 	}
-	
 	public List<Cliente> getClientes() {
-		return clienteDao.lista();
+		if (this.clientes == null) {
+			this.clientes = this.clienteDao.lista();
+		}
+		return this.clientes;
 	}
 	
 }
