@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,6 +39,7 @@ public class Promocao implements Serializable {
 	
 	private boolean receberEmDinheiro = false;
 	
+	@JoinColumn
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Lance> lances = new ArrayList<>();
 	
