@@ -43,7 +43,7 @@ public class ClientesBean {
 	@Transacional
 	public String salva() {
 		dao.salva(this.cliente);
-		facesUtils.info("Cliente adicionado com sucesso!");
+		facesUtils.info("Cliente criado com sucesso!");
 		return "lista?faces-redirect=true";
 	}
 	
