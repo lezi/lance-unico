@@ -62,7 +62,7 @@ public class ClientesBean {
 	 */
 	public String edita(Integer id) {
 		this.cliente = dao.carrega(id);
-		return "edita";
+		return null;
 	}
 	
 	/**
