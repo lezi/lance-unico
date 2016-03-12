@@ -7,6 +7,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 @Interceptor
 @Transacional
@@ -20,12 +21,17 @@ public class TransacionalInterceptor implements Serializable {
 	@AroundInvoke
 	public Object intercepta(InvocationContext ctx) throws Exception {
 		
-		manager.getTransaction().begin(); // inicia transação
-		
-		Object resultado = ctx.proceed(); // invoca método e retorna resultado
-		
-		manager.getTransaction().commit(); // comita transação
-		
+		EntityTransaction tx = manager.getTransaction();
+		Object resultado = null;
+		try {
+			tx.begin(); // inicia transação
+			resultado = ctx.proceed();
+			tx.commit(); // comita transação
+		} catch (Exception e) {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
+		}
 		return resultado;
 	}
 }
