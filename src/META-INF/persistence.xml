@@ -9,7 +9,7 @@
 		<properties>
 			<!-- Propriedades JDBC -->
 			<property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:lance-unico.db;shutdown=true" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:~/db/lance-unico.db;shutdown=true" />
 			<!-- property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:lance-unico.db" / -->
 			<property name="javax.persistence.jdbc.user" value="sa" />
 			<property name="javax.persistence.jdbc.password" value="" />
