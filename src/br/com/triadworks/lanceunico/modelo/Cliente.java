@@ -20,6 +20,10 @@ public class Cliente implements Serializable {
 	
 	public Cliente(){}
 	
+	public Cliente(String nome) {
+		this(nome, null);
+	}
+	
 	public Cliente(String nome, String email) {
 		this.id = nome.length();
 		this.nome = nome;
