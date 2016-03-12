@@ -24,7 +24,8 @@
 				</h:inputText>
 				
 				<h:outputLabel value="Receber em dinheiro?" for="dinheiro" />
-				<h:selectBooleanCheckbox label="Receber em dinheiro?" value="#{promocoesBean.promocao.receberEmDinheiro}" />
+				<h:selectBooleanCheckbox id="dinheiro" label="Receber em dinheiro?"
+					value="#{promocoesBean.promocao.receberEmDinheiro}" />
 				
 				<h:outputLabel value="Local de entrega" for="entrega" />
 				<h:selectOneMenu id="entrega" value="#{promocoesBean.promocao.entrega}"
