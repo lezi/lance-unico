@@ -1,13 +1,17 @@
 package br.com.triadworks.lanceunico.testes;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import br.com.triadworks.lanceunico.modelo.Cliente;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.service.Sorteio;
 
-public class TesteDoSorteio {
+public class SorteioTest {
 
-	public static void main(String[] args) {
+	@Test
+	public void testaSorterio_cenario1() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		Cliente rommel = new Cliente("Rommel");
@@ -26,7 +30,7 @@ public class TesteDoSorteio {
 		double maiorEsperado = 400.00;
 		double menorEsperado = 250.00;
 		
-		System.out.println(maiorEsperado == sorteio.getMaiorLance());
-		System.out.println(menorEsperado == sorteio.getMenorLance());
+		Assert.assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
+		Assert.assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
 	}
 }
