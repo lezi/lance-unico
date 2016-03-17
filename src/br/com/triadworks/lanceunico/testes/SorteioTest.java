@@ -1,5 +1,7 @@
 package br.com.triadworks.lanceunico.testes;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -99,5 +101,30 @@ public class SorteioTest {
 		
 		Assert.assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
 		Assert.assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
+	}
+	
+	@Test
+	public void testSorteio_tresMenoresLances() {
+		
+		// passo 1: monta o cenário
+		Cliente rafael = new Cliente("Rafael");
+		Cliente rommel = new Cliente("Rommel");
+		Cliente handerson = new Cliente("Handerson");
+
+		Promocao promocao = new Promocao("Xbox + Kinect");
+		promocao.registra(new Lance(rafael, 300.00));
+		promocao.registra(new Lance(rommel, 100.00));
+		promocao.registra(new Lance(handerson, 20.00));
+		promocao.registra(new Lance(rafael, 440.00));
+		promocao.registra(new Lance(rommel, 1.25));
+
+		// passo 2: executa a ação
+		Sorteio sorteio = new Sorteio();
+		sorteio.sorteia(promocao);
+		
+		// passo 3: valida o resultado
+		List<Lance> menores = sorteio.getTresMenoresLances();
+		
+		Assert.assertEquals(3, menores.size());
 	}
 }
