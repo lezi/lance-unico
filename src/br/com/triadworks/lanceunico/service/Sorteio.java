@@ -38,7 +38,7 @@ public class Sorteio {
                 return 0;
             }
         });
-        menores = menores.subList(0, 3);
+        menores = menores.subList(0, menores.size() > 3 ? 3 : menores.size());
 	}
 	
 	public List<Lance> getTresMenoresLances() {
