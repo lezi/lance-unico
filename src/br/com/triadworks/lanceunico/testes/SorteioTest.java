@@ -14,7 +14,7 @@ import br.com.triadworks.lanceunico.service.Sorteio;
 public class SorteioTest {
 
 	@Test
-	public void testSorteio_ordemCrescente() {
+	public void deveSortearLancesEmOrdemCrescente() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		Cliente rommel = new Cliente("Rommel");
@@ -38,7 +38,7 @@ public class SorteioTest {
 	}
 	
 	@Test
-	public void testSorteio_ordemDecrescente() {
+	public void deveSortearLancesEmOrdemDecrescente() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		Cliente rommel = new Cliente("Rommel");
@@ -62,7 +62,7 @@ public class SorteioTest {
 	}
 	
 	@Test
-	public void testSorteio_apenasUmLance() {
+	public void deveSortearQuandoHouverApenasUmLance() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		
@@ -79,7 +79,7 @@ public class SorteioTest {
 	}
 	
 	@Test
-	public void testSorteio_ordemAleatoria() {
+	public void deveSortearLancesEmOrdemAleatoria() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		Cliente rommel = new Cliente("Rommel");
@@ -105,7 +105,7 @@ public class SorteioTest {
 	}
 	
 	@Test
-	public void testSorteio_tresMenoresLances() {
+	public void deveSortearOsTresMenoresLances() {
 		
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
@@ -133,7 +133,7 @@ public class SorteioTest {
 	}
 	
 	@Test
-	public void testSorteio_tresMenoresLances_tamanhoDaListaMenorQue3() {
+	public void deveSortearTodosOsLancesQuandoHouverMenosDe3Lances() {
 		// passo 1: monta o cenário
 		Cliente rafael = new Cliente("Rafael");
 		Cliente rommel = new Cliente("Rommel");
@@ -155,7 +155,7 @@ public class SorteioTest {
 	}
 
 	@Test
-	public void testSorteio_tresMenoresLances_listaVazia() {
+	public void naoDeveSortearQuandoNaoHouverLances() {
 		// passo 1: monta o cenário
 		Promocao promocao = new Promocao("Xbox + Kinect");
 
