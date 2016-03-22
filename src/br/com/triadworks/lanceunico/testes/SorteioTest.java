@@ -1,8 +1,9 @@
 package br.com.triadworks.lanceunico.testes;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
@@ -32,8 +33,8 @@ public class SorteioTest {
 		double maiorEsperado = 400.00;
 		double menorEsperado = 250.00;
 		
-		Assert.assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
-		Assert.assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
+		assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
+		assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
 	}
 	
 	@Test
@@ -56,8 +57,8 @@ public class SorteioTest {
 		double maiorEsperado = 400.00;
 		double menorEsperado = 250.00;
 		
-		Assert.assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
-		Assert.assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
+		assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
+		assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
 	}
 	
 	@Test
@@ -73,8 +74,8 @@ public class SorteioTest {
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
-		Assert.assertEquals(600.00, sorteio.getMaiorLance(), 0.0001);
-		Assert.assertEquals(600.00, sorteio.getMenorLance(), 0.0001);
+		assertEquals(600.00, sorteio.getMaiorLance(), 0.0001);
+		assertEquals(600.00, sorteio.getMenorLance(), 0.0001);
 	}
 	
 	@Test
@@ -99,8 +100,8 @@ public class SorteioTest {
 		double maiorEsperado = 2990.99;
 		double menorEsperado = 1.25;
 		
-		Assert.assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
-		Assert.assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
+		assertEquals(maiorEsperado, sorteio.getMaiorLance(), 0.0001);
+		assertEquals(menorEsperado, sorteio.getMenorLance(), 0.0001);
 	}
 	
 	@Test
@@ -125,10 +126,10 @@ public class SorteioTest {
 		// passo 3: valida o resultado
 		List<Lance> menores = sorteio.getTresMenoresLances();
 		
-		Assert.assertEquals(3, menores.size());
-		Assert.assertEquals(1.25, menores.get(0).getValor(), 0.00001);
-		Assert.assertEquals(20.0, menores.get(1).getValor(), 0.00001);
-		Assert.assertEquals(100.0, menores.get(2).getValor(), 0.00001);
+		assertEquals(3, menores.size());
+		assertEquals(1.25, menores.get(0).getValor(), 0.00001);
+		assertEquals(20.0, menores.get(1).getValor(), 0.00001);
+		assertEquals(100.0, menores.get(2).getValor(), 0.00001);
 	}
 	
 	@Test
@@ -148,9 +149,9 @@ public class SorteioTest {
 		// passo 3: valida o resultado
 		List<Lance> menores = sorteio.getTresMenoresLances();
 
-		Assert.assertEquals(2, menores.size());
-		Assert.assertEquals(100.0, menores.get(0).getValor(), 0.00001);
-		Assert.assertEquals(300.0, menores.get(1).getValor(), 0.00001);
+		assertEquals(2, menores.size());
+		assertEquals(100.0, menores.get(0).getValor(), 0.00001);
+		assertEquals(300.0, menores.get(1).getValor(), 0.00001);
 	}
 
 	@Test
@@ -165,7 +166,7 @@ public class SorteioTest {
 		// passo 3: valida o resultado
 		List<Lance> menores = sorteio.getTresMenoresLances();
 
-		Assert.assertEquals(0, menores.size());
+		assertEquals(0, menores.size());
 	}
 	
 }
