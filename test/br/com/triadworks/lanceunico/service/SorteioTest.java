@@ -11,6 +11,7 @@ import br.com.triadworks.lanceunico.modelo.Cliente;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.service.Sorteio;
+import builders.CriadorDePromocao;
 
 public class SorteioTest {
 	
@@ -31,10 +32,12 @@ public class SorteioTest {
 	@Test
 	public void deveSortearLancesEmOrdemCrescente() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox");
-		promocao.registra(new Lance(handerson, 250.00));
-		promocao.registra(new Lance(rafael, 300.00));
-		promocao.registra(new Lance(rommel, 400.00)); 
+		Promocao promocao = new CriadorDePromocao()
+			.para("Xbox")
+			.comLance(handerson, 250.00)
+			.comLance(rafael, 300.00)
+			.comLance(rommel, 400.00)
+			.cria();
 		
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -50,10 +53,12 @@ public class SorteioTest {
 	@Test
 	public void deveSortearLancesEmOrdemDecrescente() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox");
-		promocao.registra(new Lance(rommel, 400.00));
-		promocao.registra(new Lance(rafael, 300.00));
-		promocao.registra(new Lance(handerson, 250.00));
+		Promocao promocao = new CriadorDePromocao()
+				.para("Xbox")
+				.comLance(rommel, 400.00)
+				.comLance(rafael, 300.00)
+				.comLance(handerson, 250.00)
+				.cria();
 		
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -69,8 +74,10 @@ public class SorteioTest {
 	@Test
 	public void deveSortearQuandoHouverApenasUmLance() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Forno Microondas");
-		promocao.registra(new Lance(rafael, 600.0));
+		Promocao promocao = new CriadorDePromocao()
+				.para("Forno Microondas")
+				.comLance(rafael, 600.0)
+				.cria();
 		
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -83,12 +90,14 @@ public class SorteioTest {
 	@Test
 	public void deveSortearLancesEmOrdemAleatoria() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox + Kinect");
-		promocao.registra(new Lance(rafael, 1050.0));
-		promocao.registra(new Lance(rommel, 2990.99));
-		promocao.registra(new Lance(handerson, 24.70));
-		promocao.registra(new Lance(rafael, 477.0));
-		promocao.registra(new Lance(rommel, 1.25));
+		Promocao promocao = new CriadorDePromocao()
+				.para("Xbox + Kinect")
+				.comLance(rafael, 1050.0)
+				.comLance(rommel, 2990.99)
+				.comLance(handerson, 24.70)
+				.comLance(rafael, 477.0)
+				.comLance(rommel, 1.25)
+				.cria();
 		
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -105,12 +114,14 @@ public class SorteioTest {
 	public void deveSortearOsTresMenoresLances() {
 		
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox + Kinect");
-		promocao.registra(new Lance(rafael, 300.0));
-		promocao.registra(new Lance(rommel, 100.0));
-		promocao.registra(new Lance(handerson, 20.0));
-		promocao.registra(new Lance(rafael, 440.0));
-		promocao.registra(new Lance(rommel, 1.25));
+		Promocao promocao = new CriadorDePromocao()
+				.para("Xbox + Kinect")
+				.comLance(rafael, 300.0)
+				.comLance(rommel, 100.0)
+				.comLance(handerson, 20.0)
+				.comLance(rafael, 440.0)
+				.comLance(rommel, 1.25)
+				.cria();
 
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -127,9 +138,11 @@ public class SorteioTest {
 	@Test
 	public void deveSortearTodosOsLancesQuandoHouverMenosDe3Lances() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox + Kinect");
-		promocao.registra(new Lance(rafael, 300.0));
-		promocao.registra(new Lance(rommel, 100.0));
+		Promocao promocao = new CriadorDePromocao()
+				.para("Xbox + Kinect")
+				.comLance(rafael, 300.0)
+				.comLance(rommel, 100.0)
+				.cria();
 
 		// passo 2: executa a ação
 		sorteio.sorteia(promocao);
@@ -145,7 +158,9 @@ public class SorteioTest {
 	@Test
 	public void naoDeveSortearQuandoNaoHouverLances() {
 		// passo 1: monta o cenário
-		Promocao promocao = new Promocao("Xbox + Kinect");
+		Promocao promocao = new CriadorDePromocao()
+				.para("Xbox + Kinect")
+				.cria();
 
 		// passo 2: executa a ação
 		Sorteio sorteio = new Sorteio();
