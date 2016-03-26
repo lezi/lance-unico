@@ -102,9 +102,14 @@ public class Promocao implements Serializable {
 	 * Registra um novo lance
 	 */
 	public void registra(Lance lance) {
-		if (lances.isEmpty() || !lances.get(lances.size()-1).getCliente().equals(lance.getCliente())) {
+		if (lances.isEmpty() || !clienteDoUltimoLance().equals(lance.getCliente())) {
 			this.lances.add(lance);
 		}
+	}
+
+	private Cliente clienteDoUltimoLance() {
+		Lance ultimo = lances.get(lances.size()-1);
+		return ultimo.getCliente();
 	}
 	
 }
