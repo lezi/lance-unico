@@ -1,4 +1,4 @@
-package br.com.triadworks.lanceunico.testes;
+package br.com.triadworks.lanceunico.service;
 
 import static org.junit.Assert.*;
 
