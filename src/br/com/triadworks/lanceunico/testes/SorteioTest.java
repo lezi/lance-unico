@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
@@ -12,21 +13,30 @@ import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.service.Sorteio;
 
 public class SorteioTest {
+	
+	private Sorteio sorteio;
+	
+	private Cliente rafael;
+	private Cliente rommel;
+	private Cliente handerson;
+
+	@Before
+	public void setUp() {
+		this.sorteio = new Sorteio();
+		this.rafael = new Cliente("Rafael");
+		this.rommel = new Cliente("Rommel");
+		this.handerson = new Cliente("Handerson");
+	}
 
 	@Test
 	public void deveSortearLancesEmOrdemCrescente() {
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		Cliente rommel = new Cliente("Rommel");
-		Cliente handerson = new Cliente("Handerson");
-		
 		Promocao promocao = new Promocao("Xbox");
 		promocao.registra(new Lance(handerson, 250.00));
 		promocao.registra(new Lance(rafael, 300.00));
 		promocao.registra(new Lance(rommel, 400.00)); 
 		
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
@@ -40,17 +50,12 @@ public class SorteioTest {
 	@Test
 	public void deveSortearLancesEmOrdemDecrescente() {
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		Cliente rommel = new Cliente("Rommel");
-		Cliente handerson = new Cliente("Handerson");
-		
 		Promocao promocao = new Promocao("Xbox");
 		promocao.registra(new Lance(rommel, 400.00));
 		promocao.registra(new Lance(rafael, 300.00));
 		promocao.registra(new Lance(handerson, 250.00));
 		
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
@@ -64,13 +69,10 @@ public class SorteioTest {
 	@Test
 	public void deveSortearQuandoHouverApenasUmLance() {
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		
 		Promocao promocao = new Promocao("Forno Microondas");
 		promocao.registra(new Lance(rafael, 600.0));
 		
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
@@ -81,10 +83,6 @@ public class SorteioTest {
 	@Test
 	public void deveSortearLancesEmOrdemAleatoria() {
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		Cliente rommel = new Cliente("Rommel");
-		Cliente handerson = new Cliente("Handerson");
-		
 		Promocao promocao = new Promocao("Xbox + Kinect");
 		promocao.registra(new Lance(rafael, 1050.0));
 		promocao.registra(new Lance(rommel, 2990.99));
@@ -93,7 +91,6 @@ public class SorteioTest {
 		promocao.registra(new Lance(rommel, 1.25));
 		
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
@@ -108,10 +105,6 @@ public class SorteioTest {
 	public void deveSortearOsTresMenoresLances() {
 		
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		Cliente rommel = new Cliente("Rommel");
-		Cliente handerson = new Cliente("Handerson");
-
 		Promocao promocao = new Promocao("Xbox + Kinect");
 		promocao.registra(new Lance(rafael, 300.0));
 		promocao.registra(new Lance(rommel, 100.0));
@@ -120,7 +113,6 @@ public class SorteioTest {
 		promocao.registra(new Lance(rommel, 1.25));
 
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 		
 		// passo 3: valida o resultado
@@ -135,15 +127,11 @@ public class SorteioTest {
 	@Test
 	public void deveSortearTodosOsLancesQuandoHouverMenosDe3Lances() {
 		// passo 1: monta o cenário
-		Cliente rafael = new Cliente("Rafael");
-		Cliente rommel = new Cliente("Rommel");
-
 		Promocao promocao = new Promocao("Xbox + Kinect");
 		promocao.registra(new Lance(rafael, 300.0));
 		promocao.registra(new Lance(rommel, 100.0));
 
 		// passo 2: executa a ação
-		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
 
 		// passo 3: valida o resultado
