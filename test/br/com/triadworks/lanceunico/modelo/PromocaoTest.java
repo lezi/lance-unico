@@ -47,5 +47,19 @@ public class PromocaoTest {
 		assertEquals(1000.0, lances.get(0).getValor(), 0.0001);
 		assertEquals(2000.0, lances.get(1).getValor(), 0.0001);
 	}
+	
+	@Test
+	public void deveIgnorarDoisLancesSeguidosDoMesmoCliente() {
+		
+		Promocao promocao = new CriadorDePromocao()
+				.para("iPad Mini")
+				.comLance(rafael, 1000.0)
+				.comLance(rafael, 1200.0)
+				.cria();
+		
+		List<Lance> lances = promocao.getLances();
+		assertEquals(1, lances.size());
+		assertEquals(1000.0, lances.get(0).getValor(), 0.0001);
+	}
 
 }
