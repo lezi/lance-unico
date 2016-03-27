@@ -85,5 +85,23 @@ public class PromocaoTest {
 		Lance ultimo = lances.get(lances.size()-1);
 		assertEquals(1000.0, ultimo.getValor(), 0.0001);
 	}
+	
+	@Test(expected=RuntimeException.class)
+	public void naoDeveRegistrarLancesComValorNegativo() {
+		
+		Promocao promocao = new CriadorDePromocao()
+				.para("Playstation 3")
+				.comLance(rafael, -10.0)
+				.cria();
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void naoDeveRegistrarLancesComValorIgualAZero() {
+		
+		Promocao promocao = new CriadorDePromocao()
+				.para("Playstation 3")
+				.comLance(rafael, 0.0)
+				.cria();
+	}
 
 }

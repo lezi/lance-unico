@@ -103,6 +103,9 @@ public class Promocao implements Serializable {
 	 */
 	public void registra(Lance lance) {
 		
+		if (lance.getValor() < 0)
+			throw new RuntimeException("Valor do lance deve ser maior que zero.");
+		
 		Cliente cliente = lance.getCliente();
 		if (clienteExcedeuNumeroMaximoDeLances(cliente)
 				|| clienteDandoLancesEmSequencia(cliente)) {
