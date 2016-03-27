@@ -103,15 +103,22 @@ public class Promocao implements Serializable {
 	 */
 	public void registra(Lance lance) {
 		
-		if (lances.isEmpty() || 
-				podeDarLances(lance.getCliente())) {
-			this.lances.add(lance);
+		Cliente cliente = lance.getCliente();
+		if (clienteExcedeuNumeroMaximoDeLances(cliente)
+				|| clienteDandoLancesEmSequencia(cliente)) {
+			return;
 		}
+		
+		this.lances.add(lance);
 	}
 
-	private boolean podeDarLances(Cliente cliente) {
+	private boolean clienteDandoLancesEmSequencia(Cliente cliente) {
+		return !lances.isEmpty() && clienteDoUltimoLance().equals(cliente);
+	}
+
+	private boolean clienteExcedeuNumeroMaximoDeLances(Cliente cliente) {
 		int total = totalDeLancesDo(cliente);
-		return !clienteDoUltimoLance().equals(cliente) && total < 5;
+		return total >= 5;
 	}
 
 	private int totalDeLancesDo(Cliente cliente) {
