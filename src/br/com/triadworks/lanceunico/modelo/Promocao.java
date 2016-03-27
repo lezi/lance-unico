@@ -103,13 +103,15 @@ public class Promocao implements Serializable {
 	 */
 	public void registra(Lance lance) {
 		
-		int total = totalDeLancesDo(lance.getCliente());
-		
 		if (lances.isEmpty() || 
-				(!clienteDoUltimoLance().equals(lance.getCliente()) 
-						&& total < 5)) {
+				podeDarLances(lance.getCliente())) {
 			this.lances.add(lance);
 		}
+	}
+
+	private boolean podeDarLances(Cliente cliente) {
+		int total = totalDeLancesDo(cliente);
+		return !clienteDoUltimoLance().equals(cliente) && total < 5;
 	}
 
 	private int totalDeLancesDo(Cliente cliente) {
