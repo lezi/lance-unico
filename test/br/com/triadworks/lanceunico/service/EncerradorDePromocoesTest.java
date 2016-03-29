@@ -1,13 +1,20 @@
 package br.com.triadworks.lanceunico.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 import br.com.triadworks.lanceunico.dao.PromocaoDao;
 import br.com.triadworks.lanceunico.modelo.Promocao;
@@ -77,6 +84,44 @@ public class EncerradorDePromocoesTest {
 		assertFalse("promoção 2 NAO encerrada", tv.isEncerrada());
 		assertTrue("promoção 3 encerrada", ipad.isEncerrada());
 		assertEquals("total", 1, encerrados);
+		
+		verify(daoFalso, never()).atualiza(ps3);
+		verify(daoFalso, never()).atualiza(tv);
+	}
+	
+	@Test
+	public void naoDeveEncerrarPromocoesCasoNaoHajaNenhum() {
+		
+		List<Promocao> semPromocoes = new ArrayList<Promocao>();
+		
+		PromocaoDao daoFalso = mock(PromocaoDao.class);
+		when(daoFalso.abertas()).thenReturn(semPromocoes);
+		
+		EncerradorDePromocoes encerrador = new EncerradorDePromocoes(daoFalso);
+		int encerrados = encerrador.encerra();
+	
+		assertEquals("total", 0, encerrados);
+	}
+	
+	@Test
+	public void deveAtualizarPromocoesEncerradas() {
+		
+		Date antiga = DateUtils.novaData("01/01/2015");
+		
+		Promocao ipad = new CriadorDePromocao()
+				.para("Ipad")
+				.naData(antiga)
+				.cria();
+		
+		List<Promocao> promocoes = Arrays.asList(ipad);
+		
+		PromocaoDao daoFalso = mock(PromocaoDao.class);
+		when(daoFalso.abertas()).thenReturn(promocoes);
+		
+		EncerradorDePromocoes encerrador = new EncerradorDePromocoes(daoFalso);
+		encerrador.encerra();
+		
+		verify(daoFalso, times(1)).atualiza(ipad);
 	}
 
 }
