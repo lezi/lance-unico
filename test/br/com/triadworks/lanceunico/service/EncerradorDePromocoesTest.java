@@ -3,6 +3,7 @@ package br.com.triadworks.lanceunico.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -122,6 +123,34 @@ public class EncerradorDePromocoesTest {
 		encerrador.encerra();
 		
 		verify(daoFalso, times(1)).atualiza(ipad);
+	}
+	
+	@Test
+	public void deveEncerrarAsPromocoesRestantesMesmoEmCasoDeFalhas() {
+		
+		Date antiga = DateUtils.novaData("01/01/2015");
+		
+		Promocao promo1 = new CriadorDePromocao()
+				.para("Playstation 3")
+				.naData(antiga)
+				.cria();
+		
+		Promocao promo2 = new CriadorDePromocao()
+				.para("TV LED 52'")
+				.naData(antiga)
+				.cria();
+		
+		PromocaoDao dao = mock(PromocaoDao.class);
+		when(dao.abertas()).thenReturn(Arrays.asList(promo1, promo2));
+		
+		// ensina mock quando lançar exceção
+		doThrow(new RuntimeException()).when(dao).atualiza(promo1);
+		
+		EncerradorDePromocoes encerrador = new EncerradorDePromocoes(dao);
+		int encerrados = encerrador.encerra();
+		
+		verify(dao).atualiza(promo2);
+		assertEquals("total", 1, encerrados);
 	}
 
 }

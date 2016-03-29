@@ -21,10 +21,14 @@ public class EncerradorDePromocoes {
 		List<Promocao> promocoes = dao.abertas();
 		
 		for (Promocao promocao : promocoes) {
-			if (promocao.foraDaVigencia(new Date())) {
-				promocao.setStatus(Status.ENCERRADA);
-				dao.atualiza(promocao);
-				total++;
+			try {
+				if (promocao.foraDaVigencia(new Date())) {
+					promocao.setStatus(Status.ENCERRADA);
+					dao.atualiza(promocao);
+					total++;
+				}
+			} catch (Exception e) {
+				// loga a exceção em arquivo e continua o loop
 			}
 		}
 		
