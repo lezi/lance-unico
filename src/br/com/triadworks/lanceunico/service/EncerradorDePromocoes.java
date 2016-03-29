@@ -9,11 +9,15 @@ import br.com.triadworks.lanceunico.modelo.Status;
 
 public class EncerradorDePromocoes {
 
+	private PromocaoDao dao;
+
+	public EncerradorDePromocoes(PromocaoDao dao) {
+		this.dao = dao;
+	}
+
 	public int encerra() {
 		
 		int total = 0;
-		
-		PromocaoDao dao = new PromocaoDao();
 		List<Promocao> promocoes = dao.abertas();
 		
 		for (Promocao promocao : promocoes) {
