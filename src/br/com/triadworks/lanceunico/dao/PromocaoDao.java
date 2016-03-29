@@ -7,10 +7,19 @@ import javax.persistence.EntityManager;
 
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
+import br.com.triadworks.lanceunico.modelo.Status;
+import br.com.triadworks.lanceunico.util.JPAUtil;
 
 public class PromocaoDao {
 	
 	private EntityManager entityManager;
+	
+	/**
+	 * Não utilizado pelo CDI
+	 */
+	public PromocaoDao() {
+		this(new JPAUtil().getEntityManager());
+	}
 	
 	@Inject
 	public PromocaoDao(EntityManager entityManager) {
@@ -24,6 +33,16 @@ public class PromocaoDao {
 		
 		return promocoes;
 	}
+	
+	public List<Promocao> abertas() {
+		List<Promocao> promocoes = entityManager
+				.createQuery("select p from Promocao p "
+						+ "where p.status = :status", Promocao.class)
+				.setParameter("status", Status.ABERTA)
+				.getResultList();
+		
+		return promocoes;
+	}
 
 	public Promocao carrega(Integer id) {
 		return entityManager.find(Promocao.class, id);
@@ -31,6 +50,10 @@ public class PromocaoDao {
 
 	public void salva(Promocao promocao) {
 		entityManager.persist(promocao);		
+	}
+	
+	public void atualiza(Promocao promocao) {
+		entityManager.merge(promocao);
 	}
 	
 	/**

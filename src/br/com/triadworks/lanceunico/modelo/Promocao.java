@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.triadworks.lanceunico.util.DateUtils;
+
 @Entity
 public class Promocao implements Serializable {
 
@@ -137,6 +139,18 @@ public class Promocao implements Serializable {
 	private Cliente clienteDoUltimoLance() {
 		Lance ultimo = lances.get(lances.size()-1);
 		return ultimo.getCliente();
+	}
+
+	/**
+	 * Verifica se promoção pode ser encerrada
+	 */
+	public boolean foraDaVigencia(Date dataBase) {
+		int dias = DateUtils.diferencaEmDias(this.data, dataBase);
+		return dias >= 30;
+	}
+
+	public boolean isEncerrada() {
+		return this.status == Status.ENCERRADA;
 	}
 	
 }
