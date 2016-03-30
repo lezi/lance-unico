@@ -1,5 +1,6 @@
 package br.com.triadworks.lanceunico.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -61,10 +62,34 @@ public class PromocaoDao {
 	 */
 	public void registraLance(Integer id, Lance lance) {
 		
-		Promocao promocao = carrega(id);
-		promocao.registra(lance);
+		// procura promocao por id
+		Promocao promocao = null;
+		List<Promocao> listaPromocoes = lista();
+		for (Promocao p : listaPromocoes) {
+			if (p.getId().equals(id)) {
+				promocao = p;
+			}
+		}
 		
-		entityManager.merge(promocao);
+		System.out.println("achou promocao nome=" + promocao.getNome());
+		
+		// insere novo lance no banco de dados
+		entityManager.persist(lance);
+		
+		System.out.println("gravou lance no banco id=" + lance.getId());
+		
+		// cria nova lista com todos os lance da promocao 
+		// e adiciona novo lance
+		List<Lance> lances = new ArrayList<Lance>();
+		lances.addAll(promocao.getLances());
+		lances.add(lance);
+		
+		promocao.getLances().clear(); // limpa lista (evita erro do hibernate)
+		promocao.getLances().addAll(lances); // atualiza lista de lances da promocao
+		
+		System.out.println("atualiza promocao no banco");
+		
+		entityManager.merge(promocao); // atualiza promocao no banco
 	}
 
 }
