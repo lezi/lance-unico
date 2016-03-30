@@ -1,10 +1,14 @@
 package br.com.triadworks.lanceunico.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Cupom {
+public class Cupom implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String numero;
 	
 	protected Cupom(){}
