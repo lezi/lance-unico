@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import br.com.triadworks.lanceunico.modelo.Cliente;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.modelo.Status;
@@ -72,6 +73,9 @@ public class PromocaoDao {
 		}
 		
 		System.out.println("achou promocao nome=" + promocao.getNome());
+
+		// recarrega informacoes do cliente
+		lance.setCliente(entityManager.find(Cliente.class, lance.getCliente().getId()));
 		
 		// insere novo lance no banco de dados
 		entityManager.persist(lance);
