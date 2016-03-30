@@ -152,5 +152,33 @@ public class EncerradorDePromocoesTest {
 		verify(dao).atualiza(promo2);
 		assertEquals("total", 1, encerrados);
 	}
+	
+	@Test
+	public void naoDeveEncerrarNenhumaPromocaoCasoTodasFalhem() {
+		
+		Date antiga = DateUtils.novaData("01/01/2015");
+		
+		Promocao promo1 = new CriadorDePromocao()
+				.para("Playstation 3")
+				.naData(antiga)
+				.cria();
+		
+		Promocao promo2 = new CriadorDePromocao()
+				.para("TV LED 52'")
+				.naData(antiga)
+				.cria();
+		
+		PromocaoDao dao = mock(PromocaoDao.class);
+		when(dao.abertas()).thenReturn(Arrays.asList(promo1, promo2));
+		
+		// ensina mock quando lançar exceção
+		doThrow(new RuntimeException()).when(dao).atualiza(promo1);
+		doThrow(new RuntimeException()).when(dao).atualiza(promo2);
+		
+		EncerradorDePromocoes encerrador = new EncerradorDePromocoes(dao);
+		int encerrados = encerrador.encerra();
+		
+		assertEquals("total", 0, encerrados);
+	}
 
 }
