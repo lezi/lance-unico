@@ -76,7 +76,6 @@ public class PromocaoDao {
 
 		// recarrega informacoes do cliente
 		lance.setCliente(entityManager.find(Cliente.class, lance.getCliente().getId()));
-		
 		// insere novo lance no banco de dados
 		entityManager.persist(lance);
 		
@@ -86,10 +85,13 @@ public class PromocaoDao {
 		// e adiciona novo lance
 		List<Lance> lances = new ArrayList<Lance>();
 		lances.addAll(promocao.getLances());
-		lances.add(lance);
+//		lances.add(lance);
 		
 		promocao.getLances().clear(); // limpa lista (evita erro do hibernate)
 		promocao.getLances().addAll(lances); // atualiza lista de lances da promocao
+		
+//		promocao.getLances().add(lance); // adiciona novo lance
+		promocao.registra(lance); // ATENCAO: mandaram usar esse novo metodo
 		
 		System.out.println("atualiza promocao no banco");
 		
