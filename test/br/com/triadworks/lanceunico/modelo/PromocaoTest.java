@@ -19,7 +19,7 @@ public class PromocaoTest {
 		this.rafael = new Cliente("Rafael");
 		this.handerson = new Cliente("Handerson");
 	}
-
+	
 	@Test
 	public void deveRegistrarUmLance() {
 		
@@ -101,6 +101,16 @@ public class PromocaoTest {
 		Promocao promocao = new CriadorDePromocao()
 				.para("Playstation 3")
 				.comLance(rafael, 0.0)
+				.cria();
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void naoDeveRegistrarLanceQuandoValorForMaiorQueOPermitido() {
+		
+		Promocao promocao = new CriadorDePromocao()
+				.para("Macbook Pro")
+				.comValorMaximo(1000)
+				.comLance(rafael, 1000.01)
 				.cria();
 	}
 
