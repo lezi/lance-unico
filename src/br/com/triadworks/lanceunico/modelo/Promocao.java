@@ -105,6 +105,9 @@ public class Promocao implements Serializable {
 	 */
 	public void registra(Lance lance) {
 		
+		if (lance.getValor() > valorMaximo)
+			throw new RuntimeException("Valor do lance maior que o permitido.");
+		
 		if (lance.getValor() <= 0)
 			throw new RuntimeException("Valor do lance deve ser maior que zero.");
 		

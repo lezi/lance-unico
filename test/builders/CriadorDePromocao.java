@@ -12,7 +12,7 @@ public class CriadorDePromocao {
 
 	public CriadorDePromocao para(String nome) {
 		promocao = new Promocao(nome);
-//		promocao.setValorMaximo(10000); // valor padrão
+		promocao.setValorMaximo(10000); // padrão: valor muito alto
 		return this;
 	}
 	
