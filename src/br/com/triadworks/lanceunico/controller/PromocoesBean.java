@@ -76,6 +76,7 @@ public class PromocoesBean implements Serializable {
 	@Transacional
 	public void registra() {
 		try {
+			lance.setId(null);
 			lance.setData(new Date());
 			
 			Integer id = promocao.getId();
