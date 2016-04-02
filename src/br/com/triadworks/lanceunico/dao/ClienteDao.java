@@ -15,6 +15,18 @@ public class ClienteDao {
 	public ClienteDao(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
+	
+	public Cliente buscaPorEmail(String email) {
+		
+		String jpql = "select c from Cliente c where x.email = :email";
+		
+		Cliente cliente = (Cliente) entityManager
+			.createQuery(jpql)
+			.setParameter("email", email)
+			.getSingleResult();
+		
+		return cliente;
+	}
 
 	public List<Cliente> lista() {
 		List<Cliente> clientes = entityManager
