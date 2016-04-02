@@ -25,7 +25,6 @@ public class Cliente implements Serializable {
 	}
 	
 	public Cliente(String nome, String email) {
-		this.id = nome.length();
 		this.nome = nome;
 		this.email = email;
 	}
