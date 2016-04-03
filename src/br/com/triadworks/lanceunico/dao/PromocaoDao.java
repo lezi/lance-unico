@@ -70,18 +70,11 @@ public class PromocaoDao {
 	 * Retorna o total de promocões encerradas
 	 */
 	public Long totalDeEncerradas() {
-		Long total = 0L;
-		
-		List<Promocao> todas = entityManager
-				.createQuery("select p from Promocao p", Promocao.class)
-				.getResultList();
-		
-		for (Promocao p : todas) {
-			if (p.isEncerrada()) {
-				total++;
-			}
-		}
-		
+		Long total = entityManager
+				.createQuery("select count(p) from Promocao p "
+						+ "	where p.status = :status", Long.class)
+				.setParameter("status", Status.ENCERRADA)
+				.getSingleResult();
 		return total;
 	}
 	
