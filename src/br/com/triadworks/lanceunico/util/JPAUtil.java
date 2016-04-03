@@ -9,12 +9,14 @@ import javax.persistence.Persistence;
 
 public class JPAUtil {
 
-	private static EntityManagerFactory factory =
-			Persistence.createEntityManagerFactory("lanceunico");
+	private static EntityManagerFactory factory;
 
 	@Produces
 	@RequestScoped
 	public EntityManager getEntityManager() {
+		if (factory == null) {
+			factory = Persistence.createEntityManagerFactory("lanceunico");
+		}
 		return factory.createEntityManager();
 	}
 

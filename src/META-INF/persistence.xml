@@ -4,7 +4,7 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
 
-	<!-- Unidade de persistencia com o nome "bugtracker" -->
+	<!-- Unidade de persistencia com o nome "lanceunico" -->
 	<persistence-unit name="lanceunico">
 		<properties>
 			<!-- Propriedades JDBC -->
