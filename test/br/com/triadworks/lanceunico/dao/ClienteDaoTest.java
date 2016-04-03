@@ -1,38 +1,54 @@
 package br.com.triadworks.lanceunico.dao;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import org.junit.Test;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
+import br.com.triadworks.lanceunico.util.JPAUtil;
 
 public class ClienteDaoTest {
 
 	@Test
-	public void deveBuscarClientePorEmail() {
+	public void deveEncontrarClientePorEmail() {
 		
 		// passo 1: cenário
-		EntityManager entityManager = mock(EntityManager.class);
-		Query query = mock(Query.class);
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		entityManager.getTransaction().begin(); // inicia transacao
 		
-		String jpql = "select c from Cliente c where x.email = :email";
-		Cliente cliente = new Cliente("Rafael", "rponte@gmail.com");
-		
-		when(entityManager.createQuery(jpql)).thenReturn(query);
-		when(query.setParameter("email", "rponte@gmail.com")).thenReturn(query);
-		when(query.getSingleResult()).thenReturn(cliente);
+		Cliente principe = new Cliente("Principe do Oceano", "principe@oceano.com");
+		entityManager.persist(principe);
 		
 		// passo 2: ação
 		ClienteDao dao = new ClienteDao(entityManager);
-		Cliente clienteDoBanco = dao.buscaPorEmail("rponte@gmail.com");
+		Cliente clienteDoBanco = dao.buscaPorEmail("principe@oceano.com");
 		
 		// passo 3: validação
-		assertEquals(cliente.getNome(), clienteDoBanco.getNome());
-		assertEquals(cliente.getEmail(), clienteDoBanco.getEmail());
+		assertEquals(principe.getNome(), clienteDoBanco.getNome());
+		assertEquals(principe.getEmail(), clienteDoBanco.getEmail());
+		
+		entityManager.getTransaction().commit(); // comita transacao
+		entityManager.close();
+	}
+	
+	@Test
+	public void naoDeveEncontrarClientePorEmail() {
+		
+		// passo 1: cenário
+		EntityManager entityManager = new JPAUtil().getEntityManager();
+		entityManager.getTransaction().begin(); // inicia transacao
+		
+		// passo 2: ação
+		ClienteDao dao = new ClienteDao(entityManager);
+		Cliente cliente = dao.buscaPorEmail("principe@oceano.com");
+		
+		assertNull(cliente);
+		
+		entityManager.getTransaction().commit(); // comita transacao
+		entityManager.close();
 	}
 
 }
