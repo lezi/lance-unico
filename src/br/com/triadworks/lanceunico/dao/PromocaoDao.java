@@ -45,6 +45,18 @@ public class PromocaoDao {
 		
 		return promocoes;
 	}
+	
+	/**
+	 * Retorna o total de promocões encerradas
+	 */
+	public Long totalDeEncerradas() {
+		Long total = entityManager
+			.createQuery("select count(p) from Promocao p "
+					+ "	where p.status = :status", Long.class)
+			.setParameter("status", Status.ENCERRADA)
+			.getSingleResult();
+		return total;
+	}
 
 	public Promocao carrega(Integer id) {
 		return entityManager.find(Promocao.class, id);
@@ -56,6 +68,10 @@ public class PromocaoDao {
 	
 	public void atualiza(Promocao promocao) {
 		entityManager.merge(promocao);
+	}
+	
+	public void remove(Promocao promocao) {
+		entityManager.remove(promocao);
 	}
 	
 	/**
