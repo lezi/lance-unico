@@ -1,6 +1,7 @@
 package br.com.triadworks.lanceunico.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,6 +42,22 @@ public class PromocaoDao {
 				.createQuery("select p from Promocao p "
 						+ "where p.status = :status", Promocao.class)
 				.setParameter("status", Status.ABERTA)
+				.getResultList();
+		
+		return promocoes;
+	}
+	
+	public List<Promocao> abertasPara(Cliente cliente, Date desdeAData) {
+		
+		List<Promocao> promocoes = entityManager
+				.createQuery("select p from Promocao p join p.lances as lance"
+						+ "	where p.status = :status "
+						+ "	  and lance.cliente = :cliente "
+						+ "	  and p.data >= :inicio "
+						+ "	order by p.data desc", Promocao.class)
+				.setParameter("status", Status.ABERTA)
+				.setParameter("cliente", cliente)
+				.setParameter("inicio", desdeAData)
 				.getResultList();
 		
 		return promocoes;

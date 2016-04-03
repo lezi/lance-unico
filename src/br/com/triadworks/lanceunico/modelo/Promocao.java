@@ -41,7 +41,7 @@ public class Promocao implements Serializable {
 	
 	private boolean receberEmDinheiro = false;
 	
-	@JoinColumn
+	@JoinColumn(name="promocao_id")
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
 	private List<Lance> lances = new ArrayList<>();
 	
