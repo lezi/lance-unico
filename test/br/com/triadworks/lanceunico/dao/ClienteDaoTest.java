@@ -5,20 +5,33 @@ import static org.junit.Assert.assertNull;
 
 import javax.persistence.EntityManager;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
 import br.com.triadworks.lanceunico.util.JPAUtil;
 
 public class ClienteDaoTest {
+	
+	private EntityManager entityManager;
+	
+	@Before
+	public void setUp() {
+		entityManager = new JPAUtil().getEntityManager();
+		entityManager.getTransaction().begin(); // inicia transacao
+	}
+	
+	@After
+	public void tearDown() {
+		entityManager.getTransaction().rollback(); // defaz transacao
+		entityManager.close();
+	}
 
 	@Test
 	public void deveEncontrarClientePorEmail() {
 		
 		// passo 1: cenário
-		EntityManager entityManager = new JPAUtil().getEntityManager();
-		entityManager.getTransaction().begin(); // inicia transacao
-		
 		Cliente principe = new Cliente("Principe do Oceano", "principe@oceano.com");
 		entityManager.persist(principe);
 		
@@ -29,26 +42,16 @@ public class ClienteDaoTest {
 		// passo 3: validação
 		assertEquals(principe.getNome(), clienteDoBanco.getNome());
 		assertEquals(principe.getEmail(), clienteDoBanco.getEmail());
-		
-		entityManager.getTransaction().commit(); // comita transacao
-		entityManager.close();
 	}
 	
 	@Test
 	public void naoDeveEncontrarClientePorEmail() {
-		
-		// passo 1: cenário
-		EntityManager entityManager = new JPAUtil().getEntityManager();
-		entityManager.getTransaction().begin(); // inicia transacao
 		
 		// passo 2: ação
 		ClienteDao dao = new ClienteDao(entityManager);
 		Cliente cliente = dao.buscaPorEmail("principe@oceano.com");
 		
 		assertNull(cliente);
-		
-		entityManager.getTransaction().commit(); // comita transacao
-		entityManager.close();
 	}
 
 }
