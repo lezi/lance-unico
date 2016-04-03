@@ -155,5 +155,9 @@ public class Promocao implements Serializable {
 	public boolean isEncerrada() {
 		return this.status == Status.ENCERRADA;
 	}
+
+	public boolean isAberta() {
+		return this.status == Status.ABERTA;
+	}
 	
 }

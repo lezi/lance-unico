@@ -1,6 +1,5 @@
 package br.com.triadworks.lanceunico.dao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,11 +70,37 @@ public class PromocaoDao {
 	 * Retorna o total de promocões encerradas
 	 */
 	public Long totalDeEncerradas() {
-		Long total = entityManager
-			.createQuery("select count(p) from Promocao p "
-					+ "	where p.status = :status", Long.class)
-			.setParameter("status", Status.ENCERRADA)
-			.getSingleResult();
+		Long total = 0L;
+		
+		List<Promocao> todas = entityManager
+				.createQuery("select p from Promocao p", Promocao.class)
+				.getResultList();
+		
+		for (Promocao p : todas) {
+			if (p.isEncerrada()) {
+				total++;
+			}
+		}
+		
+		return total;
+	}
+	
+	/**
+	 * Retorna o total de promocões abertas
+	 */
+	public Long totalDeAbertas() {
+		Long total = 0L;
+		
+		List<Promocao> todas = entityManager
+				.createQuery("select p from Promocao p", Promocao.class)
+				.getResultList();
+		
+		for (Promocao p : todas) {
+			if (p.isAberta()) {
+				total++;
+			}
+		}
+		
 		return total;
 	}
 
