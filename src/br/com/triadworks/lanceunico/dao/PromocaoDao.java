@@ -47,6 +47,10 @@ public class PromocaoDao {
 		return promocoes;
 	}
 	
+	/**
+	 * Retorna as promoções na qual o <code>cliente</code> deu algum lance em um
+	 * determinado período.
+	 */
 	public List<Promocao> abertasPara(Cliente cliente, Date desdeAData) {
 		
 		List<Promocao> promocoes = entityManager
