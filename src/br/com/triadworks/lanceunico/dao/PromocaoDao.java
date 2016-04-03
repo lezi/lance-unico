@@ -100,39 +100,10 @@ public class PromocaoDao {
 	 */
 	public void registraLance(Integer id, Lance lance) {
 		
-		// procura promocao por id
-		Promocao promocao = null;
-		List<Promocao> listaPromocoes = lista();
-		for (Promocao p : listaPromocoes) {
-			if (p.getId().equals(id)) {
-				promocao = p;
-			}
-		}
+		Promocao promocao = carrega(id);
+		promocao.registra(lance);
 		
-		System.out.println("achou promocao nome=" + promocao.getNome());
-
-		// recarrega informacoes do cliente
-		lance.setCliente(entityManager.find(Cliente.class, lance.getCliente().getId()));
-		// insere novo lance no banco de dados
-		entityManager.persist(lance);
-		
-		System.out.println("gravou lance no banco id=" + lance.getId());
-		
-		// cria nova lista com todos os lance da promocao 
-		// e adiciona novo lance
-		List<Lance> lances = new ArrayList<Lance>();
-		lances.addAll(promocao.getLances());
-//		lances.add(lance);
-		
-		promocao.getLances().clear(); // limpa lista (evita erro do hibernate)
-		promocao.getLances().addAll(lances); // atualiza lista de lances da promocao
-		
-//		promocao.getLances().add(lance); // adiciona novo lance
-		promocao.registra(lance); // ATENCAO: mandaram usar esse novo metodo
-		
-		System.out.println("atualiza promocao no banco");
-		
-		entityManager.merge(promocao); // atualiza promocao no banco
+		entityManager.merge(promocao);
 	}
 
 }

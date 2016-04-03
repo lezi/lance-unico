@@ -1,6 +1,7 @@
 package br.com.triadworks.lanceunico.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.triadworks.lanceunico.modelo.Cliente;
+import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
 import br.com.triadworks.lanceunico.modelo.Status;
 import br.com.triadworks.lanceunico.util.DateUtils;
@@ -32,6 +34,35 @@ public class PromocaoDaoTest {
 	public void tearDown() {
 		entityManager.getTransaction().rollback(); // defaz transacao
 		entityManager.close();
+	}
+	
+	@Test
+	public void deveRegistrarNovoLanceNaPromocao() {
+		
+		// passo 1: cenário
+		Cliente rafael = new Cliente("Rafael");
+		
+		Promocao promocao = new CriadorDePromocao()
+				.para("Apple TV")
+				.cria();
+		
+		entityManager.persist(rafael);
+		entityManager.persist(promocao);
+		
+		// passo 2: ação
+		Integer id = promocao.getId();
+		Lance lance = new Lance(rafael, 100.0);
+		
+		PromocaoDao dao = new PromocaoDao(entityManager);
+		dao.registraLance(id, lance);
+		
+		// passo 3: validação
+		Promocao promocaoDoBanco = dao.carrega(id);
+		assertEquals(1, promocaoDoBanco.getLances().size());
+		// asserções extras
+		Lance lanceDoBanco = promocaoDoBanco.getLances().get(0);
+		assertEquals(rafael, lanceDoBanco.getCliente());
+		assertEquals(100.0, lanceDoBanco.getValor(), 0.0001);
 	}
 	
 	@Test
