@@ -1,6 +1,6 @@
 package br.com.triadworks.lanceunico.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.junit.Test;
 import br.com.triadworks.lanceunico.modelo.Cliente;
 import br.com.triadworks.lanceunico.modelo.Lance;
 import br.com.triadworks.lanceunico.modelo.Promocao;
-import br.com.triadworks.lanceunico.service.Sorteio;
 import builders.CriadorDePromocao;
 
 public class SorteioTest {
@@ -28,7 +27,34 @@ public class SorteioTest {
 		this.rommel = new Cliente("Rommel");
 		this.handerson = new Cliente("Handerson");
 	}
+	
+	@Test
+	public void deveSortearMenorLanceUnico() {
+		
+		// passo 1: monta o cenário
+		Promocao promocao = new CriadorDePromocao()
+				.para("Macbook Pro")
+				.comLance(rafael, 300.0)
+				.comLance(handerson, 1.25)
+				.comLance(rommel, 100.0)
+				.comLance(rafael, 2020.0)
+				.comLance(handerson, 0.1)
+				.comLance(rommel, 0.24)
+				.comLance(rafael, 11.0)
+				.comLance(handerson, 6.9)
+				.comLance(rafael, 0.1)
+				.comLance(rommel, 1.25)
+				.cria();
 
+		// passo 2: executa a ação
+		sorteio.sorteia(promocao);
+		
+		// passo 3: valida o resultado
+		Lance menorLanceUnico = sorteio.getMenorLanceUnico();
+		
+		assertEquals(0.24, menorLanceUnico.getValor(), 0.0001);
+	}
+	
 	@Test
 	public void deveSortearLancesEmOrdemCrescente() {
 		// passo 1: monta o cenário
@@ -155,7 +181,7 @@ public class SorteioTest {
 		assertEquals(300.0, menores.get(1).getValor(), 0.00001);
 	}
 
-	@Test
+	@Test(expected=RuntimeException.class)
 	public void naoDeveSortearQuandoNaoHouverLances() {
 		// passo 1: monta o cenário
 		Promocao promocao = new CriadorDePromocao()
@@ -165,11 +191,6 @@ public class SorteioTest {
 		// passo 2: executa a ação
 		Sorteio sorteio = new Sorteio();
 		sorteio.sorteia(promocao);
-
-		// passo 3: valida o resultado
-		List<Lance> menores = sorteio.getTresMenoresLances();
-
-		assertEquals(0, menores.size());
 	}
 	
 }
