@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lance-unico" default="empacotar-war">
+
+	<target name="limpar">
+		<delete dir="build" />
+		<mkdir  dir="build" />
+		<mkdir  dir="build/classes" />
+		<mkdir  dir="build/classes-test" />
+		<mkdir  dir="build/relatorio-test" />
+	</target>
+
+	<target name="compilar" depends="limpar">
+		<copy todir="build/classes">
+			<fileset dir="src" excludes="**/*.java" />
+		</copy>
+		<javac destdir="build/classes" srcdir="src">
+			<classpath>
+				<fileset dir="WebContent/WEB-INF/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="compilar-testes" depends="compilar">
+		<javac destdir="build/classes-test" srcdir="test" >
+			<classpath>
+				<pathelement path="build/classes" />
+
+				<fileset dir="WebContent/WEB-INF/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="rodar-testes" depends="compilar-testes">
+		<junit haltonfailure="yes" showoutput="false" printsummary="on">
+			<batchtest todir="build/relatorio-test">
+				<formatter type="plain" />
+				<fileset dir="test">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+			<classpath>
+				<pathelement location="build/classes"/>
+				<pathelement location="build/classes-test"/>
+
+				<fileset dir="WebContent/WEB-INF/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</junit>
+	</target>
+
+	<target name="empacotar-war" depends="rodar-testes">
+		<war destfile="build/lance-unico.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent" />
+			<classes dir="build/classes" />
+		</war>
+	</target>
+
+</project>
