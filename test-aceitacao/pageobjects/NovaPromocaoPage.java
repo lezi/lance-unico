@@ -40,7 +40,7 @@ public class NovaPromocaoPage {
 
 	public void submete() {
 		WebElement botao = driver.findElement(By.id("btn-salvar"));
-        botao.click();		
+        botao.click();
 	}
 
 }

@@ -29,7 +29,7 @@ public class CadastroDeClientesTest {
 	
 	@Before
 	public void setUp() {
-//		driver.get("http://localhost:8080/lance-unico/pages/limpa-banco.xhtml");
+		driver.get("http://localhost:8080/lance-unico/pages/limpa-banco.xhtml");
 	}
 	
 	@Test

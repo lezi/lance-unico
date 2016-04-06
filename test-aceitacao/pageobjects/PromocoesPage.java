@@ -1,5 +1,7 @@
 package pageobjects;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,6 +29,12 @@ public class PromocoesPage {
 	public boolean contemMensagem(String msg) {
 		WebElement mensagens = driver.findElement(By.id("mensagens"));
 		return mensagens.getText().contains(msg);
+	}
+
+	public NovoLancePage gerenciar() {
+		 List<WebElement> links = driver.findElements(By.linkText("gerenciar"));
+		 links.get(0).click();
+		 return new NovoLancePage(driver);
 	}
 
 }
