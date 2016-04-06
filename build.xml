@@ -2,18 +2,18 @@
 <project name="lance-unico" default="empacotar-war">
 
 	<target name="limpar">
-		<delete dir="build" />
-		<mkdir  dir="build" />
-		<mkdir  dir="build/classes" />
-		<mkdir  dir="build/classes-test" />
-		<mkdir  dir="build/relatorio-test" />
+		<delete dir="target" />
+		<mkdir  dir="target" />
+		<mkdir  dir="target/classes" />
+		<mkdir  dir="target/classes-test" />
+		<mkdir  dir="target/relatorio-test" />
 	</target>
 
 	<target name="compilar" depends="limpar">
-		<copy todir="build/classes">
+		<copy todir="target/classes">
 			<fileset dir="src" excludes="**/*.java" />
 		</copy>
-		<javac destdir="build/classes" srcdir="src">
+		<javac destdir="target/classes" srcdir="src">
 			<classpath>
 				<fileset dir="WebContent/WEB-INF/lib">
 					<include name="*.jar" />
@@ -23,9 +23,9 @@
 	</target>
 
 	<target name="compilar-testes" depends="compilar">
-		<javac destdir="build/classes-test" srcdir="test" >
+		<javac destdir="target/classes-test" srcdir="test" >
 			<classpath>
-				<pathelement path="build/classes" />
+				<pathelement path="target/classes" />
 
 				<fileset dir="WebContent/WEB-INF/lib">
 					<include name="*.jar" />
@@ -36,15 +36,15 @@
 
 	<target name="rodar-testes" depends="compilar-testes">
 		<junit haltonfailure="yes" showoutput="false" printsummary="on">
-			<batchtest todir="build/relatorio-test">
-				<formatter type="plain" />
+			<batchtest todir="target/relatorio-test">
+				<formatter type="xml" />
 				<fileset dir="test">
 					<include name="**/*Test.java" />
 				</fileset>
 			</batchtest>
 			<classpath>
-				<pathelement location="build/classes"/>
-				<pathelement location="build/classes-test"/>
+				<pathelement location="target/classes"/>
+				<pathelement location="target/classes-test"/>
 
 				<fileset dir="WebContent/WEB-INF/lib">
 					<include name="*.jar" />
@@ -54,9 +54,9 @@
 	</target>
 
 	<target name="empacotar-war" depends="rodar-testes">
-		<war destfile="build/lance-unico.war" webxml="WebContent/WEB-INF/web.xml">
+		<war destfile="target/lance-unico.war" webxml="WebContent/WEB-INF/web.xml">
 			<fileset dir="WebContent" />
-			<classes dir="build/classes" />
+			<classes dir="target/classes" />
 		</war>
 	</target>
 
