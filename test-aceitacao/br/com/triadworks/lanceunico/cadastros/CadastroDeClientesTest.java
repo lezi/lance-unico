@@ -1,6 +1,9 @@
 package br.com.triadworks.lanceunico.cadastros;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,10 +12,21 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class CadastroDeClientesTest {
 	
+	private static WebDriver driver;
+	
+	@BeforeClass
+	public static void inicializa() {
+		driver = new FirefoxDriver();
+	}
+	
+	@AfterClass
+	public static void finaliza() {
+		 driver.close();
+	}
+	
 	@Test
 	public void deveAdicionarNovoCliente() {
 		
-		WebDriver driver = new FirefoxDriver();
         driver.get("http://localhost:8080/lance-unico/pages/clientes/novo.xhtml");
 
         WebElement nome = driver.findElement(By.name("nome"));
@@ -24,16 +38,13 @@ public class CadastroDeClientesTest {
         WebElement botao = driver.findElement(By.id("btn-salvar"));
         botao.click();
 
-        assertTrue(driver.getPageSource().contains("Bruce Wayne"));
-        assertTrue(driver.getPageSource().contains("bruce@wayne.com"));
-
-        driver.close();
+        WebElement mensagens = driver.findElement(By.id("mensagens"));
+        assertTrue(mensagens.getText().contains("Cliente criado com sucesso!"));
 	}
 	
 	@Test
 	public void naoDeveAdicionarNovoClienteSemEmail() {
 		
-		WebDriver driver = new FirefoxDriver();
         driver.get("http://localhost:8080/lance-unico/pages/clientes/novo.xhtml");
 
         WebElement nome = driver.findElement(By.name("nome"));
@@ -42,23 +53,21 @@ public class CadastroDeClientesTest {
         WebElement botao = driver.findElement(By.id("btn-salvar"));
         botao.click();
 
-        assertTrue(driver.getPageSource().contains("Email: campo é obrigatório"));
-
-        driver.close();
+        WebElement mensagens = driver.findElement(By.id("mensagens"));
+        assertTrue(mensagens.getText().contains("Email: campo é obrigatório"));
 	}
 	
 	@Test
 	public void naoDeveAdicionarNovoClienteSemNomeEEmail() {
 		
-		WebDriver driver = new FirefoxDriver();
 		driver.get("http://localhost:8080/lance-unico/pages/clientes/novo.xhtml");
 		
 		WebElement botao = driver.findElement(By.id("btn-salvar"));
 		botao.click();
 		
-		assertTrue(driver.getPageSource().contains("Email: campo é obrigatório"));
-		
-		driver.close();
+		WebElement mensagens = driver.findElement(By.id("mensagens"));
+		assertTrue(mensagens.getText().contains("Nome: campo é obrigatório"));
+		assertTrue(mensagens.getText().contains("Email: campo é obrigatório"));
 	}
 
 }
