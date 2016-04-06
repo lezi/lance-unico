@@ -49,7 +49,7 @@
 						pt:placeholder="cupom" title="Cupom fiscal" 
 						required="true" maxlength="10">
 					</h:inputText>
-					<h:commandButton value="dar lance" action="#{promocoesBean.registra}">
+					<h:commandButton id="btn-lance" value="dar lance" action="#{promocoesBean.registra}">
 						<f:ajax execute="form" render="subform lances :mensagens" />
 					</h:commandButton>
 				</h:panelGroup>
