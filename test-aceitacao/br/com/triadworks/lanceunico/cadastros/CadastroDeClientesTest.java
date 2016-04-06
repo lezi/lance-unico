@@ -3,12 +3,15 @@ package br.com.triadworks.lanceunico.cadastros;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
+import pageobjects.ClientesPage;
 
 public class CadastroDeClientesTest {
 	
@@ -24,22 +27,22 @@ public class CadastroDeClientesTest {
 		 driver.close();
 	}
 	
+	@Before
+	public void setUp() {
+//		driver.get("http://localhost:8080/lance-unico/pages/limpa-banco.xhtml");
+	}
+	
 	@Test
 	public void deveAdicionarNovoCliente() {
 		
-        driver.get("http://localhost:8080/lance-unico/pages/clientes/novo.xhtml");
-
-        WebElement nome = driver.findElement(By.name("nome"));
-        WebElement email = driver.findElement(By.name("email"));
-
-        nome.sendKeys("Bruce Wayne");
-        email.sendKeys("bruce@wayne.com");
-
-        WebElement botao = driver.findElement(By.id("btn-salvar"));
-        botao.click();
-
-        WebElement mensagens = driver.findElement(By.id("mensagens"));
-        assertTrue(mensagens.getText().contains("Cliente criado com sucesso!"));
+		ClientesPage listagem = new ClientesPage(driver);
+		listagem.abre()
+			.novo()
+			.preencheNome("Bruce Wayne")
+			.preencheEmail("bruce@wayne.com")
+			.submete();
+		
+		assertTrue(listagem.contemMensagem("Cliente criado com sucesso!"));
 	}
 	
 	@Test
