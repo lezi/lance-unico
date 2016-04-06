@@ -35,6 +35,14 @@ public class CadastroDePromocoesTest {
 	@Test
 	public void deveRegistrarNovoLance() {
 		
+		// cria novo cliente
+		ClientesPage clientes = new ClientesPage(driver);
+		clientes.abre()
+			.novo()
+			.preencheNome("Barry Allen")
+			.preencheEmail("the@flash.com")
+			.submete();
+		
 		// cria nova promocao
 		PromocoesPage promocoes = new PromocoesPage(driver);
 		promocoes.abre()
@@ -43,14 +51,6 @@ public class CadastroDePromocoesTest {
 			.preencheValorMaximo("800,00")
 			.selecionaReceberEmDinheiro()
 			.selecionaLocalDeEntrega("Loja")
-			.submete();
-		
-		// cria novo cliente
-		ClientesPage clientes = new ClientesPage(driver);
-		clientes.abre()
-			.novo()
-			.preencheNome("Barry Allen")
-			.preencheEmail("the@flash.com")
 			.submete();
 		
 		// seleciona 1a promocao na grid de listagem
