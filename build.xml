@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="lance-unico" default="empacotar-war">
 
+	<!-- ================================= 
+		 Limpa diretórios e arquivos              
+		 ================================= -->
 	<target name="limpar">
 		<delete dir="target" />
 		<mkdir  dir="target" />
@@ -9,6 +12,9 @@
 		<mkdir  dir="target/relatorio-test" />
 	</target>
 
+	<!-- ================================= 
+		 Compila classes de produção              
+		 ================================= -->
 	<target name="compilar" depends="limpar">
 		<copy todir="target/classes">
 			<fileset dir="src" excludes="**/*.java" />
@@ -22,6 +28,9 @@
 		</javac>
 	</target>
 
+	<!-- ================================= 
+		 Compila classes de testes              
+		 ================================= -->
 	<target name="compilar-testes" depends="compilar">
 		<javac destdir="target/classes-test" srcdir="test" >
 			<classpath>
@@ -34,6 +43,9 @@
 		</javac>
 	</target>
 
+	<!-- ================================= 
+		 Roda bateria de testes            
+		 ================================= -->
 	<target name="rodar-testes" depends="compilar-testes">
 		<junit haltonfailure="yes" showoutput="false" printsummary="on">
 			<batchtest todir="target/relatorio-test">
@@ -53,6 +65,9 @@
 		</junit>
 	</target>
 
+	<!-- ================================= 
+		 Gera .war do projeto            
+		 ================================= -->
 	<target name="empacotar-war" depends="rodar-testes">
 		<war destfile="target/lance-unico.war" webxml="WebContent/WEB-INF/web.xml">
 			<fileset dir="WebContent" />
