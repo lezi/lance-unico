@@ -104,44 +104,7 @@ public class Promocao implements Serializable {
 	 * Registra um novo lance
 	 */
 	public void registra(Lance lance) {
-		
-		if (lance.getValor() > valorMaximo)
-			throw new RuntimeException("Valor do lance maior que o permitido.");
-		
-		if (lance.getValor() <= 0)
-			throw new RuntimeException("Valor do lance deve ser maior que zero.");
-		
-		Cliente cliente = lance.getCliente();
-		if (clienteExcedeuNumeroMaximoDeLances(cliente)
-				|| clienteDandoLancesEmSequencia(cliente)) {
-			return;
-		}
-		
 		this.lances.add(lance);
-	}
-
-	private boolean clienteDandoLancesEmSequencia(Cliente cliente) {
-		return !lances.isEmpty() && clienteDoUltimoLance().equals(cliente);
-	}
-
-	private boolean clienteExcedeuNumeroMaximoDeLances(Cliente cliente) {
-		int total = totalDeLancesDo(cliente);
-		return total >= 5;
-	}
-
-	private int totalDeLancesDo(Cliente cliente) {
-		int total = 0;
-		for (Lance l : this.lances) {
-			if (l.getCliente().equals(cliente)) {
-				total++;
-			}
-		}
-		return total;
-	}
-
-	private Cliente clienteDoUltimoLance() {
-		Lance ultimo = lances.get(lances.size()-1);
-		return ultimo.getCliente();
 	}
 
 	/**
